@@ -1,51 +1,41 @@
 import React, { useEffect, useState } from "react";
-import {
-  BrowserRouter as Router,
-  Navigate,
-  Route,
-  Routes,
-} from "react-router-dom";
-import { PrivateRoute } from "./views/components";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import { PrivateRoute, SplashScreen } from "./views/components";
 import { Dashboard, Login, Register } from "./views/pages";
 const App = () => {
   const [isLogin, setIsLogin] = useState(null);
   const [checkLogin, setCheckLogin] = useState(true);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
       setIsLogin(false);
     } else {
       setIsLogin(true);
+      navigate("/");
     }
     setTimeout(() => {
       setCheckLogin(false);
     }, 1000);
-  }, []);
+  }, [navigate]);
 
   if (checkLogin) {
-    return <p>Loading</p>
-  }
-
-  if (isLogin) {
-    <Navigate to="/" />;
+    return <SplashScreen />;
   }
 
   return (
-    <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <PrivateRoute isLogin={isLogin}>
-              <Dashboard />
-            </PrivateRoute>
-          }
-        />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-    </Router>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <PrivateRoute isLogin={isLogin}>
+            <Dashboard />
+          </PrivateRoute>
+        }
+      />
+      <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<Login />} />
+    </Routes>
   );
 };
 

@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Loading } from "../../components";
+import { Spinner } from "../../components";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ const Login = () => {
   });
   const [response, setResponse] = useState("");
   const [isError, setIsError] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setSpinner] = useState(false);
   const { email, password } = LoginForm;
 
   const emailRef = useRef(null);
@@ -29,7 +29,7 @@ const Login = () => {
     e.preventDefault();
     setResponse("");
     setIsError(false);
-    setLoading(true);
+    setSpinner(true);
     const data = {
       email,
       password,
@@ -48,10 +48,10 @@ const Login = () => {
         setResponse(`Success, your token is ${getToken}`);
         navigate("/");
       }
-      setLoading(false);
+      setSpinner(false);
     } catch (error) {
       setResponse(error?.response?.data?.error);
-      setLoading(false);
+      setSpinner(false);
       setIsError(true);
     }
   };
@@ -82,7 +82,7 @@ const Login = () => {
           <p className="text-base">
             Belum memiliki akun?{" "}
             <Link to="/register" className="text-teal-600 hover:text-teal-700">
-              Login
+              Register
             </Link>
           </p>
         </div>
@@ -121,7 +121,7 @@ const Login = () => {
             className="bg-teal-500 text-white rounded-md p-2 hover:bg-teal-700 flex items-center disabled:hover:bg-gray-100 disabled:bg-gray-100 justify-center"
             type="submit"
           >
-            {loading ? <Loading /> : "Sign In"}
+            {loading ? <Spinner /> : "Sign In"}
           </button>
         </form>
         {response && (

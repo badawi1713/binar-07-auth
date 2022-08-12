@@ -1,6 +1,6 @@
 import React from "react";
 
-const Loading = () => {
+const Spinner = () => {
   return (
     <div role="status">
       <svg
@@ -19,9 +19,9 @@ const Loading = () => {
           fill="currentFill"
         />
       </svg>
-      <span className="sr-only ">Loading...</span>
+      <span className="sr-only ">Spinner...</span>
     </div>
   );
 };
 
-export default Loading;
+export default Spinner;

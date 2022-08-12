@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 // import { useAuthStatus } from "../../../hooks/useAuthStatus";
-import { Loading } from "../../components";
+import { Spinner } from "../../components";
 
 const Register = () => {
   // const { loggedIn } = useAuthStatus();
@@ -13,7 +13,7 @@ const Register = () => {
   });
   const [response, setResponse] = useState("");
   const [isError, setIsError] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setSpinner] = useState(false);
   const { email, password } = registerForm;
 
   const emailRef = useRef(null);
@@ -29,7 +29,7 @@ const Register = () => {
     e.preventDefault();
     setResponse("");
     setIsError(false);
-    setLoading(true);
+    setSpinner(true);
     const data = {
       email,
       password,
@@ -44,10 +44,10 @@ const Register = () => {
         setResponse(`Success, your token is ${response?.data?.token}`);
         emailRef.current.focus();
       }
-      setLoading(false);
+      setSpinner(false);
     } catch (error) {
       setResponse(error?.response?.data?.error);
-      setLoading(false);
+      setSpinner(false);
       setIsError(true);
     }
   };
@@ -118,7 +118,7 @@ const Register = () => {
             className="bg-teal-500 text-white rounded-md p-2 hover:bg-teal-700 flex items-center disabled:hover:bg-gray-100 disabled:bg-gray-100 justify-center"
             type="submit"
           >
-            {loading ? <Loading /> : "Sign Up"}
+            {loading ? <Spinner /> : "Sign Up"}
           </button>
         </form>
         {response && (
