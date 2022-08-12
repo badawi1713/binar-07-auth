@@ -44,7 +44,6 @@ const Login = () => {
         emailRef.current.focus();
         localStorage?.setItem("token", token);
         const getToken = localStorage.getItem("token");
-        setResponse(`Success, your token is ${getToken}`);
         navigate("/");
       }
       setSpinner(false);
@@ -58,14 +57,14 @@ const Login = () => {
   useEffect(() => {
     emailRef.current.focus();
   }, []);
-
+    
   return (
     <main className="min-h-screen flex">
       <section className="w-4/6 hidden md:block">
         <div
           style={{
             backgroundImage:
-              'url("http://localhost:3000/assets/images/auth-cover.jpg")',
+              `url("${window.location.origin}/assets/images/auth-cover.jpg")`,
           }}
           className="bg-cover h-full bg-center w-full bg-no-repeat"
         />
