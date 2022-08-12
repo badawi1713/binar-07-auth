@@ -9,13 +9,15 @@ const Dashboard = () => {
   };
   return (
     <main className="min-h-screen flex flex-col justify-center items-center bg-teal-600">
-      <h2 className="text-2xl text-white">こんにちは</h2>
-      <button
-        onClick={onLogout}
-        className="p-2 bg-white rounded-md text-center w-auto mt-6"
-      >
-        Logout
-      </button>
+      <h2 className="text-2xl text-white mb-6">Dashboard</h2>
+      <div className="flex gap-8">
+        <button
+          onClick={onLogout}
+          className="p-2 bg-white rounded-md text-center w-auto"
+        >
+          Logout
+        </button>
+      </div>
     </main>
   );
 };

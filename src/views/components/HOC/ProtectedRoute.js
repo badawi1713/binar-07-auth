@@ -1,8 +1,7 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 
-const PrivateRoute = ({ isLogin, children }) => {
-  console.log(isLogin);
+const ProtectedRoute = ({ isLogin, children }) => {
   if (!isLogin) {
     return <Navigate to={"/login"} replace />;
   }
@@ -10,4 +9,4 @@ const PrivateRoute = ({ isLogin, children }) => {
   return children;
 };
 
-export default PrivateRoute;
+export default ProtectedRoute;

@@ -1,9 +1,11 @@
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Spinner } from "../../components";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const [registerForm, setRegisterForm] = useState({
     email: "",
     password: "",
@@ -41,13 +43,27 @@ const Register = () => {
         emailRef.current.focus();
       }
       setSpinner(false);
-      setResponse('Akun berhasil terdaftar, silakan login.');
+      setResponse("Akun berhasil terdaftar, silakan login.");
     } catch (error) {
       setResponse(error?.response?.data?.error);
       setSpinner(false);
       setIsError(true);
     }
   };
+
+  const redirect = useCallback(
+    () => navigate("/dashboard", { replace: true }),
+    [navigate]
+  );
+
+  useEffect(() => {
+    const checkIfLogin = () => {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+      redirect();
+    };
+    checkIfLogin();
+  }, [redirect]);
 
   useEffect(() => {
     emailRef.current.focus();

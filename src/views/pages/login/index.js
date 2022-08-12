@@ -1,9 +1,9 @@
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Spinner } from "../../components";
 
-const Login = () => {
+const Login = ({ setIsLogin }) => {
   const navigate = useNavigate();
 
   const [LoginForm, setLoginForm] = useState({
@@ -43,7 +43,8 @@ const Login = () => {
         });
         emailRef.current.focus();
         localStorage?.setItem("token", token);
-        navigate("/");
+        setIsLogin(true);
+        navigate("/dashboard", { replace: true });
       }
       setSpinner(false);
     } catch (error) {
@@ -53,17 +54,30 @@ const Login = () => {
     }
   };
 
+  const redirect = useCallback(
+    () => navigate("/dashboard", { replace: true }),
+    [navigate]
+  );
+
+  useEffect(() => {
+    const checkIfLogin = () => {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+      redirect();
+    };
+    checkIfLogin();
+  }, [redirect]);
+
   useEffect(() => {
     emailRef.current.focus();
   }, []);
-    
+
   return (
     <main className="min-h-screen flex">
       <section className="w-4/6 hidden md:block">
         <div
           style={{
-            backgroundImage:
-              `url("${window.location.origin}/assets/images/auth-cover.jpg")`,
+            backgroundImage: `url("${window.location.origin}/assets/images/auth-cover.jpg")`,
           }}
           className="bg-cover h-full bg-center w-full bg-no-repeat"
         />

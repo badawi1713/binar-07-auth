@@ -1,23 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
-import { PrivateRoute, SplashScreen } from "./views/components";
-import { Dashboard, Login, Register } from "./views/pages";
+import { Route, Routes } from "react-router-dom";
+import { ProtectedRoute, SplashScreen } from "./views/components";
+import { Dashboard, Home, Login, Page404, Register } from "./views/pages";
 const App = () => {
   const [isLogin, setIsLogin] = useState(null);
   const [checkLogin, setCheckLogin] = useState(true);
-  const navigate = useNavigate();
+
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setIsLogin(false);
-    } else {
-      setIsLogin(true);
-      navigate("/");
-    }
-    setTimeout(() => {
+    const checkIfLogin = () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setIsLogin(false);
+      } else {
+        setIsLogin(true);
+      }
+    };
+    checkIfLogin();
+    const splashScreenTimeout = setTimeout(() => {
       setCheckLogin(false);
     }, 1000);
-  }, [navigate]);
+
+    return () => {
+      clearTimeout(splashScreenTimeout);
+    };
+  }, []);
 
   if (checkLogin) {
     return <SplashScreen />;
@@ -25,16 +31,18 @@ const App = () => {
 
   return (
     <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login setIsLogin={setIsLogin} />} />
+      <Route path="/register" element={<Register />} />
       <Route
-        path="/"
+        path="/dashboard"
         element={
-          <PrivateRoute isLogin={isLogin}>
+          <ProtectedRoute isLogin={isLogin}>
             <Dashboard />
-          </PrivateRoute>
+          </ProtectedRoute>
         }
       />
-      <Route path="/register" element={<Register />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="*" element={<Page404 />} />
     </Routes>
   );
 };
