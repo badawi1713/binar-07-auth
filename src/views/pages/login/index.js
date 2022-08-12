@@ -5,7 +5,6 @@ import { Spinner } from "../../components";
 
 const Login = () => {
   const navigate = useNavigate();
-  //   const { loggedIn } = useAuthStatus();
 
   const [LoginForm, setLoginForm] = useState({
     email: "",
@@ -59,10 +58,6 @@ const Login = () => {
   useEffect(() => {
     emailRef.current.focus();
   }, []);
-
-  //   if (loggedIn) {
-  //     return <Navigate to="/" />;
-  //   }
 
   return (
     <main className="min-h-screen flex">

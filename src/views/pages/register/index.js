@@ -1,12 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-// import { useAuthStatus } from "../../../hooks/useAuthStatus";
 import { Spinner } from "../../components";
 
 const Register = () => {
-  // const { loggedIn } = useAuthStatus();
-
   const [registerForm, setRegisterForm] = useState({
     email: "",
     password: "",
@@ -55,10 +52,6 @@ const Register = () => {
   useEffect(() => {
     emailRef.current.focus();
   }, []);
-
-  // if (loggedIn) {
-  //   return <Navigate to="/" />;
-  // }
 
   return (
     <main className="min-h-screen block md:flex">
