@@ -1,11 +1,28 @@
 import React from "react";
 
-const Spinner = () => {
+const Spinner = ({ size = "" }) => {
+  const checkSize = (size) => {
+    switch (size) {
+      case "sm":
+        return "w-6 h-6";
+      case "md":
+        return "w-8 h-8";
+      case "lg":
+        return "w-12 h-12";
+      case "xl":
+        return "w-14 h-14";
+      default:
+        return "w-6 h-6";
+    }
+  };
+
   return (
     <div role="status">
       <svg
         aria-hidden="true"
-        className="mr-2 w-6 h-6 animate-spin text-white fill-teal-400"
+        className={`mr-2 ${checkSize(
+          size
+        )} animate-spin text-white fill-teal-400`}
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
