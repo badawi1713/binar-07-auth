@@ -1,25 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Navigate,
+  Route,
+  Routes,
+} from "react-router-dom";
+import { PrivateRoute } from "./views/components";
+import { Dashboard, Login, Register } from "./views/pages";
+const App = () => {
+  const [isLogin, setIsLogin] = useState(null);
+  const [checkLogin, setCheckLogin] = useState(true);
 
-function App() {
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setIsLogin(false);
+    } else {
+      setIsLogin(true);
+    }
+    setTimeout(() => {
+      setCheckLogin(false);
+    }, 1000);
+  }, []);
+
+  if (checkLogin) {
+    return <p>Loading</p>
+  }
+
+  if (isLogin) {
+    <Navigate to="/" />;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <PrivateRoute isLogin={isLogin}>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
