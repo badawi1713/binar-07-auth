@@ -41,6 +41,7 @@ const Register = () => {
         emailRef.current.focus();
       }
       setSpinner(false);
+      setResponse('Akun berhasil terdaftar, silakan login.');
     } catch (error) {
       setResponse(error?.response?.data?.error);
       setSpinner(false);

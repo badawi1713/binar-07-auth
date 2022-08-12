@@ -43,7 +43,6 @@ const Login = () => {
         });
         emailRef.current.focus();
         localStorage?.setItem("token", token);
-        const getToken = localStorage.getItem("token");
         navigate("/");
       }
       setSpinner(false);
