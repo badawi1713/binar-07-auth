@@ -17,7 +17,7 @@ const Page404 = () => {
             <div className="pt-8 text-base font-semibold leading-7">
               <p className="text-gray-900">Halaman Tidak Ditemukan!</p>
               <p>
-                <Link to="/login" className="text-teal-500 hover:text-teal-600">
+                <Link to="/" className="text-teal-500 hover:text-teal-600">
                   Kembali &rarr;
                 </Link>
               </p>
