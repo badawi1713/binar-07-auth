@@ -6,14 +6,14 @@ import { Spinner } from "../../components";
 const Login = ({ setIsLogin }) => {
   const navigate = useNavigate();
 
-  const [LoginForm, setLoginForm] = useState({
+  const [loginForm, setLoginForm] = useState({
     email: "",
     password: "",
   });
   const [response, setResponse] = useState("");
   const [isError, setIsError] = useState(false);
   const [loading, setSpinner] = useState(false);
-  const { email, password } = LoginForm;
+  const { email, password } = loginForm;
 
   const emailRef = useRef(null);
 

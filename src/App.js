@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { ProtectedRoute, SplashScreen } from "./views/components";
-import { Dashboard, Home, Login, Page404, Register } from "./views/pages";
+import {
+  Dashboard,
+  Detail,
+  Home,
+  Login,
+  Page404,
+  Register
+} from "./views/pages";
 const App = () => {
   const [isLogin, setIsLogin] = useState(null);
   const [checkLogin, setCheckLogin] = useState(true);
@@ -32,16 +39,25 @@ const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login setIsLogin={setIsLogin} />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="login" element={<Login setIsLogin={setIsLogin} />} />
+      <Route path="register" element={<Register />} />
       <Route
-        path="/dashboard"
+        path="dashboard"
         element={
           <ProtectedRoute isLogin={isLogin}>
             <Dashboard />
           </ProtectedRoute>
         }
       />
+      <Route
+        path="detail/:id"
+        element={
+          <ProtectedRoute isLogin={isLogin}>
+            <Detail />
+          </ProtectedRoute>
+        }
+      />
+
       <Route path="*" element={<Page404 />} />
     </Routes>
   );
