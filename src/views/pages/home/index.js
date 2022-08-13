@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
   const todos = [
-    "Membuat halaman register",
-    "Membuat halaman login",
-    "Membuat halaman dashboard",
+    "Membuat proses autentikasi",
+    "Membuat halaman login, register, dashboard, dan detail",
+    "Melakukan proses CRUD",
   ];
 
   return (
