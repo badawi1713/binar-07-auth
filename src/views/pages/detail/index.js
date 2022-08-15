@@ -1,3 +1,4 @@
+import { Alert, Snackbar } from "@mui/material";
 import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -7,13 +8,15 @@ const Detail = () => {
   const { id: userID } = useParams();
   const [dataForm, setDataForm] = useState({
     id: "",
-    name: "",
+    first_name: "",
+    last_name: "",
   });
-  const [isError, setIsError] = useState(false);
   const [loading, setSpinner] = useState(false);
-  const [response, setResponse] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
+  const [alert, setAlert] = useState({ severity: "", message: "Hello" });
+  const { severity, message } = alert;
 
-  const { id, name } = dataForm;
+  const { id, first_name, last_name } = dataForm;
 
   const handleInputChange = (e) => {
     setDataForm((prevState) => ({
@@ -23,19 +26,18 @@ const Detail = () => {
   };
 
   const getDetailData = useCallback(async () => {
-    setIsError(false);
     setSpinner(true);
     try {
       const response = await axios.get(`https://reqres.in/api/users/${userID}`);
       if (response?.data?.data) {
         const { id, last_name, first_name } = response?.data?.data;
-        setDataForm({ id: id, name: `${first_name} ${last_name}` });
+        setDataForm({ id: id, first_name, last_name });
       }
       setSpinner(false);
     } catch (error) {
-      setResponse(error?.response?.data?.error);
+      setShowAlert(true);
+      setAlert({ message: error?.response?.data?.error, severity: "error" });
       setSpinner(false);
-      setIsError(true);
     }
   }, [userID]);
 
@@ -43,71 +45,67 @@ const Detail = () => {
     getDetailData();
   }, [getDetailData]);
 
+  const handleCloseAlert = () => {
+    setShowAlert(false);
+  };
+
   const handleUpdate = async (e) => {
     e.preventDefault();
-    setResponse("");
-    setIsError(false);
     setSpinner(true);
     const data = {
-      name,
+      first_name,
+      last_name,
     };
     try {
-      const response = await axios.put(
-        `https://reqres.in/api/users/${userID}`,
-        data
-      );
-      if (response?.data) {
-        setDataForm({
-          id: "",
-          name: "",
-        });
-      }
+      await axios.put(`https://reqres.in/api/users/${userID}`, data);
+      setShowAlert(true);
+      setAlert({ message: "User is updated!", severity: "success" });
       setSpinner(false);
-      setResponse("User has been updated!");
       getDetailData();
     } catch (error) {
-      setResponse(error?.response?.data?.error);
+      setShowAlert(true);
+      setAlert({ message: error?.response?.data?.error, severity: "error" });
       setSpinner(false);
-      setIsError(true);
     }
   };
 
   return (
-    <main className="min-h-screen flex flex-col justify-center items-center bg-teal-600">
-      <div className="flex p-16 lg:p-6 gap-8 container justify-between items-center w-full">
+    <main className="flex flex-col justify-center items-center ">
+      <div className="flex p-16 lg:p-6 gap-8 container justify-between items-center w-full bg-teal-600">
         <Link to="/dashboard" className="text-white hover:text-gray-400">
           &larr; Kembali
         </Link>
-        <h2 className="text-2xl text-white">Detail {name}</h2>
+        <h2 className="text-2xl text-white">User ID: {id}</h2>
       </div>
       <form
         onSubmit={handleUpdate}
-        className="bg-white md:flex-1 max-w-lg w-full md:max-w-full mx-auto p-16 flex flex-col justify-center gap-8"
+        className="bg-white w-full md:max-w-3xl  mx-auto px-16 py-8 flex flex-col justify-center gap-8"
       >
+        <h2 className="text-2xl font-bold">Edit Form</h2>
         <div className="flex flex-col gap-2">
-          <label>ID</label>
+          <label>First Name</label>
           <input
             onChange={handleInputChange}
             className=" px-4 py-2 border rounded-md text-sm  "
             type={"text"}
-            name="id"
-            id="id"
-            placeholder="ID User"
-            value={id}
-            disabled
+            name="first_name"
+            id="first_name"
+            placeholder="First name..."
+            value={first_name}
+            disabled={loading}
             required
           />
         </div>
         <div className="flex flex-col gap-2">
-          <label>Fullname</label>
+          <label>Last Name</label>
           <input
             onChange={handleInputChange}
             className=" px-4 py-2 border rounded-md text-sm  "
             type={"text"}
-            name="name"
-            id="name"
-            placeholder="Fullname"
-            value={name}
+            name="last_name"
+            id="last_name"
+            placeholder="Last name..."
+            value={last_name}
             disabled={loading}
             required
           />
@@ -117,18 +115,22 @@ const Detail = () => {
           className="bg-teal-500 text-white rounded-md p-2 hover:bg-teal-700 flex items-center disabled:hover:bg-gray-100 disabled:bg-gray-100 justify-center"
           type="submit"
         >
-          {loading ? <Spinner /> : "Edit"}
+          {loading ? <Spinner /> : "Save"}
         </button>
-        {response && (
-          <p
-            className={`font-semibold text-center ${
-              isError ? "text-red-500" : "text-green-600"
-            }`}
-          >
-            {response}
-          </p>
-        )}
       </form>
+      <Snackbar
+        open={showAlert}
+        autoHideDuration={6000}
+        onClose={handleCloseAlert}
+      >
+        <Alert
+          onClose={handleCloseAlert}
+          severity={severity}
+          sx={{ width: "100%" }}
+        >
+          {message}
+        </Alert>
+      </Snackbar>
     </main>
   );
 };
