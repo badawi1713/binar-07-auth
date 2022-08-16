@@ -152,7 +152,7 @@ const Dashboard = () => {
               />
               <div className="px-6 py-4">
                 <div className="font-bold text-xl mb-2">
-                  #ID ${item?.id} - {item?.first_name} {item?.last_name}
+                  #ID {item?.id} - {item?.first_name} {item?.last_name}
                 </div>
                 <p className="italic">{item?.email || "-"}</p>
               </div>
