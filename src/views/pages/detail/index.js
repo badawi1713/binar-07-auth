@@ -13,7 +13,7 @@ const Detail = () => {
   });
   const [loading, setSpinner] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const [alert, setAlert] = useState({ severity: "", message: "Hello" });
+  const [alert, setAlert] = useState({ severity: "success", message: "Hello" });
   const { severity, message } = alert;
 
   const { id, first_name, last_name } = dataForm;
@@ -71,11 +71,14 @@ const Detail = () => {
 
   return (
     <main className="flex flex-col justify-center items-center ">
-      <div className="flex p-16 lg:p-6 gap-8 container justify-between items-center w-full bg-teal-600">
-        <Link to="/dashboard" className="text-white hover:text-gray-400">
+      <div className="flex p-6 gap-8 justify-between items-center w-full bg-teal-600">
+        <Link
+          to="/dashboard"
+          className="text-white hover:text-gray-400 text-lg"
+        >
           &larr; Kembali
         </Link>
-        <h2 className="text-2xl text-white">User ID: {id}</h2>
+        <h2 className="text-lg text-white">User ID: {id}</h2>
       </div>
       <form
         onSubmit={handleUpdate}
@@ -110,18 +113,32 @@ const Detail = () => {
             required
           />
         </div>
-        <button
-          disabled={loading}
-          className="bg-teal-500 text-white rounded-md p-2 hover:bg-teal-700 flex items-center disabled:hover:bg-gray-100 disabled:bg-gray-100 justify-center"
-          type="submit"
-        >
-          {loading ? <Spinner /> : "Save"}
-        </button>
+        <div className="flex w-full gap-4">
+          <button
+            disabled={loading}
+            className="text-teal-500 rounded-md p-2 border-teal-500 hover:bg-teal-700 hover:text-white border flex items-center disabled:hover:border-gray-100 disabled:border-gray-100 w-28 justify-center"
+            onClick={getDetailData}
+            type="button"
+          >
+            Reset
+          </button>
+          <button
+            disabled={loading}
+            className="bg-teal-500 text-white rounded-md p-2 hover:bg-teal-700 flex items-center disabled:hover:bg-gray-100 disabled:bg-gray-100 w-28 justify-center"
+            type="submit"
+          >
+            {loading ? <Spinner /> : "Save"}
+          </button>
+        </div>
       </form>
       <Snackbar
         open={showAlert}
         autoHideDuration={6000}
         onClose={handleCloseAlert}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
       >
         <Alert
           onClose={handleCloseAlert}

@@ -15,7 +15,7 @@ const Dashboard = () => {
   const [data, setData] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const [alert, setAlert] = useState({ severity: "", message: "Hello" });
+  const [alert, setAlert] = useState({ severity: "success", message: "Hello" });
   const [selectedData, setSelectedData] = useState(null);
 
   const { severity, message } = alert;
@@ -78,6 +78,10 @@ const Dashboard = () => {
           open={showAlert}
           autoHideDuration={6000}
           onClose={handleCloseAlert}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "center",
+          }}
         >
           <Alert
             onClose={handleCloseAlert}
@@ -100,7 +104,7 @@ const Dashboard = () => {
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="delete-dialog-description">
-              Confirm to delete user with name {selectedData?.first_name}{" "}
+              Confirm to delete user with ID {selectedData?.id}{" "}
               {selectedData?.last_name}.
             </DialogContentText>
           </DialogContent>
@@ -148,7 +152,7 @@ const Dashboard = () => {
               />
               <div className="px-6 py-4">
                 <div className="font-bold text-xl mb-2">
-                  {item?.first_name} {item?.last_name}
+                  #ID ${item?.id} - {item?.first_name} {item?.last_name}
                 </div>
                 <p className="italic">{item?.email || "-"}</p>
               </div>
