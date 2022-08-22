@@ -1,11 +1,14 @@
 import axios from "axios";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../context/AuthContext";
 import { Spinner } from "../../components";
 
-const Login = ({ setIsLogin }) => {
+const Login = () => {
   const navigate = useNavigate();
-
+  const authContextData = useContext(AuthContext);
+  const { setIsLogin } = authContextData;
+  
   const [loginForm, setLoginForm] = useState({
     email: "",
     password: "",

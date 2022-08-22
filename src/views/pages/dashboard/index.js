@@ -5,13 +5,17 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Snackbar,
+  Snackbar
 } from "@mui/material";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../../../context/AuthContext";
 
 const Dashboard = () => {
+  const authContextData = useContext(AuthContext);
+  const { onLogout } = authContextData;
+
   const [data, setData] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -19,12 +23,6 @@ const Dashboard = () => {
   const [selectedData, setSelectedData] = useState(null);
 
   const { severity, message } = alert;
-
-  const navigate = useNavigate();
-  const onLogout = () => {
-    localStorage.clear();
-    navigate("/login");
-  };
 
   const getData = async () => {
     try {
@@ -104,8 +102,8 @@ const Dashboard = () => {
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="delete-dialog-description">
-              Confirm to delete user with ID {selectedData?.id}{" "}
-              {selectedData?.last_name}.
+              Confirm to delete user with ID {selectedData?.id} -{" "}
+              {`${selectedData?.first_name} ${selectedData?.last_name}`}.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
